@@ -1,0 +1,18 @@
+meta {
+  name: create plant
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title":"girassol vermelho",
+    "plantingDate":"2024-04-05"
+  }
+}
