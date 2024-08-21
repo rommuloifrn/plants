@@ -24,22 +24,24 @@ public class PlantService {
     }
 
     public Plant findById(Long id) throws EntityNotFoundException {
-        return findOrThowError(id);
+        return findOrThrowNotFound(id);
     }
 
     public Plant updateById(Plant plant, Long id) throws EntityNotFoundException {
-        var dbPlant = findOrThowError(id);
+        plant.setId(id);
+        var dbPlant = findOrThrowNotFound(id);
         if (plant.getTitle() != null) dbPlant.setTitle(plant.getTitle());
         if (plant.getPlantingDate() != null) dbPlant.setPlantingDate(plant.getPlantingDate());
 
         return pr.save(dbPlant);
     }
 
-    public void delete(Long id) {
-        pr.deleteById(id);
+    public void delete(Long id) throws EntityNotFoundException {
+        var plant = findOrThrowNotFound(id);
+        pr.delete(plant);
     }
 
-    public Plant findOrThowError (Long id) throws EntityNotFoundException {
+    public Plant findOrThrowNotFound (Long id) throws EntityNotFoundException {
         var opt = pr.findById(id);
         if (opt.isEmpty()) throw new EntityNotFoundException("There is not a plant with this id :(...");
         return opt.get();
